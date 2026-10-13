@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iniciar sesión · Vitis Gran Reserva</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main class="pantalla-centro">
+    <section class="marca-panel">
+      <div class="logo" id="logo"></div>
+      <div>
+        <h1>Vitis Gran Reserva</h1>
+        <p class="lema">Vinos y singanis de los valles de Chuquisaca.</p>
+        <p class="lema-extra small" style="color:#d9b9b9;max-width:36ch">Sistema de gestión interna: ventas, caja y asistencia del personal.</p>
+      </div>
+      <a href="kiosco.html" class="btn sec" style="align-self:flex-start">Marcar asistencia con PIN →</a>
+      <!-- Copa de vino decorativa -->
+      <svg class="copa" viewBox="0 0 200 320" aria-hidden="true">
+        <defs>
+          <linearGradient id="vinoLiq" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#c2465e"/><stop offset="1" stop-color="#5a1022"/>
+          </linearGradient>
+          <linearGradient id="vidrioG" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".5" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/>
+          </linearGradient>
+        </defs>
+        <path d="M100 205 C 40 205 22 150 30 20 L 170 20 C 178 150 160 205 100 205 Z" fill="url(#vidrioG)" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
+        <path class="liquido" d="M33 110 C 70 100 130 120 167 108 C 166 170 150 198 100 198 C 50 198 34 170 33 110 Z" fill="url(#vinoLiq)"/>
+        <path d="M48 40 C 44 90 48 140 62 170" stroke="rgba(255,255,255,.45)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <rect x="96" y="205" width="8" height="85" fill="rgba(255,255,255,.3)"/>
+        <ellipse cx="100" cy="294" rx="52" ry="10" fill="rgba(255,255,255,.18)" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
+      </svg>
+    </section>
+
+    <section class="form-panel">
+      <form class="tarjeta-login" id="formLogin" novalidate>
+        <h2>Iniciar sesión</h2>
+        <p class="muted small" style="margin-top:0">Ingrese con su usuario o correo institucional.</p>
+        <div id="aviso"></div>
+
+        <div class="campo">
+          <label for="usuario" class="req">Usuario o correo</label>
+          <input id="usuario" name="usuario" autocomplete="username" autofocus>
+          <div class="msg"></div>
+        </div>
+        <div class="campo">
+          <label for="password" class="req">Contraseña</label>
+          <div class="ojo">
+            <input id="password" name="password" type="password" autocomplete="current-password">
+            <button type="button" id="verClave">Ver</button>
+          </div>
+          <div class="msg"></div>
+        </div>
+        <button class="btn bloque" id="btnEntrar">Ingresar</button>
+
+        <div class="demo">
+          <strong>Usuarios de prueba</strong> (contraseña <code>Vino2026*</code>)<br>
+          <code>admin</code> Administrador · <code>cajero1</code> Cajero · <code>empleado1</code> Empleado<br>
+          <code>empleado2</code> está desactivado (baja lógica).
+        </div>
+        <div class="demo" style="margin-top:.8rem">
+          <strong>Modo demostración:</strong> el servidor se simula en este navegador con la misma lógica del sistema. Los datos se guardan solo aquí.
+          <button type="button" class="btn sec mini" style="margin-top:.5rem" onclick="reiniciarDemo()">Reiniciar datos de prueba</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
+  <script src="js/mock.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    document.getElementById('logo').innerHTML = ICONOS.logo + 'Vitis Gran Reserva';
+    if (Sesion.token) location.replace('app.html');
+
+    const motivos = {
+      SESION_EXPIRADA: ['aviso', 'Su sesión se cerró por inactividad. Ingrese nuevamente.'],
+      CUENTA_INACTIVA: ['error', 'Su cuenta fue desactivada por el administrador.'],
+      SESION_INVALIDA: ['aviso', 'Su sesión terminó. Ingrese nuevamente.'],
+      SALIDA: ['ok', 'Sesión cerrada correctamente.'],
+    };
+    const m = motivos[new URLSearchParams(location.search).get('motivo')];
+    const aviso = document.getElementById('aviso');
+    if (m) aviso.innerHTML = `<div class="alerta ${m[0]}">${m[1]}</div>`;
+
+    document.getElementById('verClave').onclick = (e) => {
+      const i = document.getElementById('password');
+      i.type = i.type === 'password' ? 'text' : 'password';
+      e.target.textContent = i.type === 'password' ? 'Ver' : 'Ocultar';
+    };
+
+    const form = document.getElementById('formLogin');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const d = datosForm(form);
+      const errores = {};
+      if (!d.usuario.trim()) errores.usuario = 'Ingrese su usuario o correo';
+      if (!d.password) errores.password = 'Ingrese su contraseña';
+      mostrarErrores(form, errores);
+      if (Object.keys(errores).length) return;
+
+      const btn = document.getElementById('btnEntrar');
+      btn.disabled = true; btn.textContent = 'Verificando…';
+      try {
+        const r = await api('POST', '/auth/login', d);
+        Sesion.guardar(r.token, r.usuario, r.inactividad_min);
+        location.href = 'app.html';
+      } catch (err) {
+        aviso.innerHTML = `<div class="alerta error">${esc(err.message)}</div>`;
+        form.password.value = '';
+        form.password.focus();
+      } finally {
+        btn.disabled = false; btn.textContent = 'Ingresar';
+      }
+    });
+  </script>
+</body>
+</html>

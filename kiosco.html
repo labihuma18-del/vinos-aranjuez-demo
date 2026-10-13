@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kiosco de asistencia · Vitis Gran Reserva</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main class="pantalla-centro">
+    <section class="marca-panel">
+      <div class="logo" id="logo"></div>
+      <div>
+        <p class="lema" id="fechaHoy"></p>
+        <div class="reloj" id="reloj">--:--</div>
+        <p class="small" style="color:#d9b9b9;max-width:34ch">Ingrese su CI y su PIN personal. El sistema registra su ENTRADA o SALIDA automáticamente.</p>
+      </div>
+      <a href="index.html" class="btn sec" style="align-self:flex-start">← Volver al inicio de sesión</a>
+    </section>
+
+    <section class="form-panel">
+      <form class="tarjeta-login" id="formKiosco" novalidate>
+        <h2>Marcar asistencia</h2>
+        <div id="resultado"></div>
+        <div class="campo">
+          <label for="ci" class="req">Carnet de identidad</label>
+          <input id="ci" name="ci" inputmode="numeric" autocomplete="off" autofocus>
+          <div class="msg"></div>
+        </div>
+        <div class="campo">
+          <label class="req">PIN</label>
+          <input type="hidden" name="pin" id="pin">
+          <div class="pin-display" id="pinVista">····</div>
+          <div class="msg"></div>
+        </div>
+        <div class="teclado" id="teclado"></div>
+        <button class="btn bloque grande" id="btnMarcar">Registrar</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
+  <script src="js/mock.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    document.getElementById('logo').innerHTML = ICONOS.logo + 'Vitis Gran Reserva';
+    const reloj = () => {
+      const d = new Date();
+      document.getElementById('reloj').textContent = d.toLocaleTimeString('es-BO', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      document.getElementById('fechaHoy').textContent = d.toLocaleDateString('es-BO', { weekday: 'long', day: 'numeric', month: 'long' });
+    };
+    reloj(); setInterval(reloj, 1000);
+
+    const form = document.getElementById('formKiosco');
+    const pin = document.getElementById('pin');
+    const vista = () => { document.getElementById('pinVista').textContent = pin.value ? '•'.repeat(pin.value.length) : '····'; };
+    const teclas = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'Borrar', '0', 'Limpiar'];
+    document.getElementById('teclado').innerHTML = teclas.map((t) => `<button type="button" data-t="${t}">${t}</button>`).join('');
+    document.getElementById('teclado').onclick = (e) => {
+      const t = e.target.dataset.t; if (!t) return;
+      if (t === 'Borrar') pin.value = pin.value.slice(0, -1);
+      else if (t === 'Limpiar') pin.value = '';
+      else if (pin.value.length < 6) pin.value += t;
+      vista();
+    };
+
+    // También se puede escribir el PIN con el teclado (cuando el cursor no está en el CI)
+    document.addEventListener('keydown', (e) => {
+      if (e.target === form.ci) return;
+      if (/^[0-9]$/.test(e.key) && pin.value.length < 6) { pin.value += e.key; vista(); }
+      else if (e.key === 'Backspace') { pin.value = pin.value.slice(0, -1); vista(); }
+    });
+
+    let reinicio;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const d = datosForm(form);
+      const errores = {};
+      if (!/^[0-9]{5,10}(-[0-9A-Za-z]{1,2})?$/.test(d.ci.trim())) errores.ci = 'Ingrese un CI válido';
+      if (!/^[0-9]{4,6}$/.test(d.pin)) errores.pin = 'El PIN tiene de 4 a 6 dígitos';
+      mostrarErrores(form, errores);
+      if (Object.keys(errores).length) return;
+
+      const res = document.getElementById('resultado');
+      try {
+        const r = await api('POST', '/asistencia/kiosco', d);
+        const tipo = r.registro.tipo;
+        res.innerHTML = `<div class="alerta ok"><strong>${tipo === 'ENTRADA' ? '¡Bienvenido/a!' : '¡Hasta mañana!'}</strong><br>${esc(r.mensaje)} — ${r.registro.fecha_hora.slice(11, 16)}</div>`;
+      } catch (err) {
+        res.innerHTML = `<div class="alerta error">${esc(err.message)}</div>`;
+      }
+      form.reset(); pin.value = ''; vista(); form.ci.focus();
+      clearTimeout(reinicio);
+      reinicio = setTimeout(() => { res.innerHTML = ''; }, 6000);
+    });
+  </script>
+</body>
+</html>
