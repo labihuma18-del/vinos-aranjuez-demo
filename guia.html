@@ -137,7 +137,7 @@
           <tr><td><code>login.html</code></td><td>Inicio de sesión del personal</td><td>Personal</td></tr>
           <tr><td><code>app.html</code></td><td>Sistema: menú y pantallas según el rol</td><td>Todo el personal, según su rol</td></tr>
           <tr><td><code>kiosco.html</code></td><td>Marcado de asistencia con CI y PIN</td><td>Trabajadores, en la entrada</td></tr>
-          <tr><td><code>guia.html</code></td><td>Esta guía, con el guion y las instrucciones</td><td>Docente y grupo</td></tr>
+          <tr><td><code>guia.html</code></td><td>Esta guía, con el guion y las instrucciones</td><td>Grupo</td></tr>
         </tbody>
       </table></div>
     </section>
@@ -152,15 +152,7 @@
       <p><code>mock.js</code> aplica las mismas reglas que el servidor: bcrypt, permisos por rol, 403, bloqueo por intentos, reserva de stock, cobro en caja y auditoría. Los datos se guardan en el navegador de quien lo abre: un pedido hecho en un celular no aparece en otra computadora. Para que tienda y caja compartan datos entre equipos se usa el sistema completo con MySQL.</p>
     </section>
 
-    <section class="panel">
-      <h2>Publicar en GitHub Pages</h2>
-      <ol>
-        <li>Crear un repositorio <strong>público</strong> en github.com, por ejemplo <code>bodegas-aranjuez</code>.</li>
-        <li>Pulsar <strong>uploading an existing file</strong> y arrastrar el contenido de esta carpeta: <code>index.html</code>, <code>login.html</code>, <code>app.html</code>, <code>kiosco.html</code>, <code>guia.html</code> y las carpetas <code>css</code> y <code>js</code>. Luego <strong>Commit changes</strong>.</li>
-        <li>Ir a <strong>Settings → Pages</strong>, elegir la rama <strong>main</strong> y la carpeta <strong>/(root)</strong>, y pulsar <strong>Save</strong>.</li>
-        <li>En 1 o 2 minutos aparece la URL: <code>https://USUARIO.github.io/bodegas-aranjuez/</code>. La guía queda en <code>…/guia.html</code>.</li>
-      </ol>
-    </section>
+   
   </main>
   <script src="js/api.js"></script>
   <script>document.getElementById('logo').innerHTML = ICONOS.logo + 'Bodegas Aranjuez';</script>
