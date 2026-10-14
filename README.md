@@ -11,7 +11,6 @@ Es una **maqueta funcional**: el servidor se simula con `js/mock.js` (mismas reg
 | `login.html` | Inicio de sesión | Personal |
 | `app.html` | Sistema con menú según el rol | Personal |
 | `kiosco.html` | Marcado de asistencia con CI y PIN | Trabajadores |
-| `guia.html` | Guía, usuarios de prueba y guion de 10 minutos | Docente y grupo |
 
 **Usuarios de prueba** (contraseña `Vino2026*`): `admin`, `cajero1`, `cajero2`, `almacen1`, `empleado1`, `empleado2` (desactivado).
 **Pedido de prueba:** `PW-000001`, celular `76543210`.
