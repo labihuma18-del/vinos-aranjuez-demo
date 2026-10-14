@@ -17,5 +17,4 @@ Es una **maqueta funcional**: el servidor se simula con `js/mock.js` (mismas reg
 
 ## Notas
 - Los datos viven en el navegador (localStorage). En el login, **Restablecer datos de prueba** vuelve al estado inicial.
-- Si el navegador bloquea el almacenamiento (ventana privada), la demo funciona igual mientras no se recargue la página.
-- Para conectar estas mismas pantallas a MySQL se quitan las líneas `bcrypt.min.js` y `js/mock.js` de los HTML.
+- Para conectar estas mismas pantallas a MySQL se quitan las líneas `bcrypt.min.js` y `js/mock.js` de los HTML en el archivo local
