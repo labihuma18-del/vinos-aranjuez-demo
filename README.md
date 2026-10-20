@@ -1,22 +1,30 @@
 # Bodegas Aranjuez — Sistema de control
 
-Tienda en línea y sistema interno de **Bodegas Aranjuez**, versión demo para previsualización de las funciones
-El servidor se simula con `js/mock.js` La integracion con sql por ahora es local. 
+Proyecto académico de tienda en línea y sistema interno de gestión para Bodegas Aranjuez.
+
+El sistema original funciona en un entorno local por el momento. Para facilitar su presentación y permitir que cualquier integrante del grupo pueda acceder sin instalar el proyecto, se desarrolló una maqueta virtual de demostración, compatible con GitHub Pages.
+
+La maqueta utiliza `js/mock.js` para simular las operaciones del servidor y permitir la navegación por las principales funcionalidades.
 
 ## Páginas
 
-|Archivo|Qué es|Quién la usa|
-|-|-|-|
-|`index.html`|Tienda: estante de botellas, catálogo, carrito, reserva y seguimiento|Clientes (pública)|
-|`login.html`|Inicio de sesión|Personal|
-|`app.html`|Sistema con menú según el rol|Personal|
-|`kiosco.html`|Marcado de asistencia con CI, PIN y ubicación|Trabajadores|
-|`guia.html`|Guía, usuarios de prueba y guion de 12 minutos|Docente y grupo|
+| Archivo | Descripción |
+|---|---|
+| `index.html` | Tienda, catálogo, carrito, reservas y seguimiento de pedidos. |
+| `login.html` | Inicio de sesión del personal. |
+| `app.html` | Sistema interno con menú según el rol. |
+| `kiosco.html` | Marcado de asistencia. |
+| `guia.html` | Guía de uso, usuarios de prueba y guion de exposición. |
 
-**Usuarios de prueba** (contraseña `Vino2026\*`): `admin`, `cajero1`, `cajero2`, `almacen1`, `empleado1`, `empleado2` (desactivado).
-**Pedido de prueba:** `PW-000001`, celular `76543210`.
+## Datos de prueba
 
-## Notas
+- **Contraseña:** `Vino2026*`
+- **Usuarios:** `admin`, `cajero1`, `cajero2`, `almacen1`, `empleado1` y `empleado2` (desactivado).
+- **Pedido:** `PW-000001`
+- **Celular:** `76543210`
 
-* Para conectar las pantallas a MySQL no olvidar quitar las líneas `bcrypt.min.js` y `js/mock.js` de los HTML.
+## Nota
 
+Esta versión es una maqueta para exposición académica. El sistema original y su integración con SQL se mantienen en el entorno local; las operaciones de la versión publicada se simulan mediante `js/mock.js`.
+
+**Para conectar las pantallas al backend real, eliminar las referencias a `js/mock.js` y `bcrypt.min.js` de los HTML únicamente después de adaptar y verificar la integración con el backend y la autenticación correspondientes.**
