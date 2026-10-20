@@ -1,7 +1,7 @@
-# Bodegas Aranjuez — Versión en línea (GitHub Pages)
+# Bodegas Aranjuez — Sistema de control
 
-Tienda en línea y sistema interno de **Bodegas Aranjuez**, listos para usar desde el navegador **sin instalar nada**.
-Es una **maqueta funcional**: el servidor se simula con `js/mock.js` (mismas reglas que el backend real: bcrypt, roles y permisos, 403, bloqueo por intentos, reserva de stock, cobro en caja, kardex de almacén, roles creados por el administrador, ubicación al marcar asistencia y auditoría con avisos) y los datos se guardan en el navegador de quien lo abre. La integracion con sql por ahora es local. 
+Tienda en línea y sistema interno de **Bodegas Aranjuez**, versión demo para previsualización de las funciones
+El servidor se simula con `js/mock.js` La integracion con sql por ahora es local. 
 
 ## Páginas
 
@@ -18,8 +18,5 @@ Es una **maqueta funcional**: el servidor se simula con `js/mock.js` (mismas reg
 
 ## Notas
 
-* Los datos viven en el navegador (localStorage). En el login, **Restablecer datos de prueba** vuelve al estado inicial.
-* Si el navegador bloquea el almacenamiento (ventana privada), la demo funciona igual mientras no se recargue la página.
-* **Ubicación:** GitHub Pages usa HTTPS, así que el navegador pide permiso de ubicación al marcar asistencia. La sede de demostración es la Facultad de Ciencias y Tecnología de la USFX (radio fijo de 50 m); el administrador la cambia en **Sede y ubicación**.
-* Para conectar estas mismas pantallas a MySQL se quitan las líneas `bcrypt.min.js` y `js/mock.js` de los HTML.
+* Para conectar las pantallas a MySQL no olvidar quitar las líneas `bcrypt.min.js` y `js/mock.js` de los HTML.
 
