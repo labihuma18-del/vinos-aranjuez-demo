@@ -1,7 +1,7 @@
 # Bodegas Aranjuez — Versión en línea (GitHub Pages)
 
 Tienda en línea y sistema interno de **Bodegas Aranjuez**, listos para usar desde el navegador **sin instalar nada**.
-Es una **maqueta funcional**: el servidor se simula con `js/mock.js` (mismas reglas que el backend real: bcrypt, roles y permisos, 403, bloqueo por intentos, reserva de stock, cobro en caja, kardex de almacén, roles creados por el administrador, ubicación al marcar asistencia y auditoría con avisos) y los datos se guardan en el navegador de quien lo abre. El sistema real, con Node.js y MySQL, está en la carpeta `02-codigo-fuente` de los entregables.
+Es una **maqueta funcional**: el servidor se simula con `js/mock.js` (mismas reglas que el backend real: bcrypt, roles y permisos, 403, bloqueo por intentos, reserva de stock, cobro en caja, kardex de almacén, roles creados por el administrador, ubicación al marcar asistencia y auditoría con avisos) y los datos se guardan en el navegador de quien lo abre. La integracion con sql por ahora es local. 
 
 ## Páginas
 
